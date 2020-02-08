@@ -97,16 +97,20 @@ document.onkeydown = function(e) {
     case 37: //left arrow
       //If you are not playing a walkaround, change page
       if (document.activeElement.id != "SBURBStage" && document.activeElement.type != "application/x-shockwave-flash") {
-        document.getElementsByClassName("disp-ib")[0].lastElementChild.click(); // `disp-ib` is SBaHJ's special forward / backward nav box
+        if (document.getElementsByClassName("disp-ib")[0] !== undefined) {
+          document.getElementsByClassName("disp-ib")[0].lastElementChild.click(); // `disp-ib` is SBaHJ's special forward / backward nav box
+        }
         document.getElementsByClassName("o_game-nav-item")[1].lastElementChild.click();
       }
       break;
     case 39: //right arrow
       if (document.activeElement.id != "SBURBStage" && document.activeElement.type != "application/x-shockwave-flash") {
-        if (!window.location.hostname.includes("homestuck2.com")) { // site-specific workaround - for some reason, `click()`ing both elements doesn't work on Homestuck^2
+        if (!window.location.hostname.includes("homestuck2.com") && // site-specific workaround - for some reason, `click()`ing both elements doesn't work on Homestuck^2
+          document.getElementsByClassName("disp-ib")[1] !== undefined) {
           document.getElementsByClassName("disp-ib")[1].firstElementChild.click();
         }
-        document.getElementsByClassName("o_story-nav type-hs-copy line-tight pad-x-0 pad-x-lg--md")[0].lastElementChild.children[1].click();  // This also handles the Epilogues if we remove the last class `mar-b-lg` (Epilogues use `pad-b`lg`).
+
+        document.getElementsByClassName("o_story-nav type-hs-copy line-tight pad-x-0 pad-x-lg--md")[0].getElementsByTagName('a')[0].click();  // This also handles the Epilogues if we remove the last class `mar-b-lg` (Epilogues use `pad-b`lg`).
       }
       break;
   }
