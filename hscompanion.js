@@ -17,7 +17,7 @@ browser.storage.local.get(["hussiecomment", "autoopenchat"]).then(result => {
   if (result.hussiecomment)
     requestCommentary();
   if (result.autoopenchat)
-    openChat();
+    toggleChat();
 });
 
 //Time to request the commentary from the API
@@ -78,9 +78,30 @@ function requestCommentary() {
   }
 }
 
-function openChat() {
-  document.getElementsByClassName("o_chat-log-btn").length 
-    && document.getElementsByClassName("o_chat-log-btn")[0].click();
+function toggleChat() {
+  if (document.getElementsByClassName("o_chat-log-btn").length) {
+    var chatLogButtons = document.getElementsByClassName("o_chat-log-btn");
+    for (var i = 0; i < chatLogButtons.length; ++i) {
+      chatLogButtons[i].click();
+    }
+  }
+}
+
+function goToNextPage() {
+  if (!window.location.hostname.includes("homestuck2.com") && // site-specific workaround - for some reason, `click()`ing both elements doesn't work on Homestuck^2
+    document.getElementsByClassName("disp-ib")[1] !== undefined) {
+    document.getElementsByClassName("disp-ib")[1].firstElementChild.click();
+  }
+
+  var storyNav = document.getElementsByClassName("o_story-nav type-hs-copy line-tight pad-x-0 pad-x-lg--md");
+  storyNav[storyNav.length-1].getElementsByTagName('a')[0].click();  // This also handles the Epilogues if we remove the last class `mar-b-lg` (Epilogues use `pad-b`lg`).
+}
+
+function goToPreviousPage() {
+  if (document.getElementsByClassName("disp-ib")[0] !== undefined) {
+    document.getElementsByClassName("disp-ib")[0].lastElementChild.click(); // `disp-ib` is SBaHJ's special forward / backward nav box
+  }
+  document.getElementsByClassName("o_game-nav-item")[1].lastElementChild.click();
 }
 
 //Keyboard controls
@@ -90,27 +111,19 @@ document.onkeydown = function(e) {
     case 17: //either ctrl key
       if (e.location == 2){ //restricts key to right ctrl
         if (document.activeElement.id != "SBURBStage" && document.activeElement.type != "application/x-shockwave-flash") {
-          openChat();
+          toggleChat();
         }
       }
       break;
     case 37: //left arrow
       //If you are not playing a walkaround, change page
       if (document.activeElement.id != "SBURBStage" && document.activeElement.type != "application/x-shockwave-flash") {
-        if (document.getElementsByClassName("disp-ib")[0] !== undefined) {
-          document.getElementsByClassName("disp-ib")[0].lastElementChild.click(); // `disp-ib` is SBaHJ's special forward / backward nav box
-        }
-        document.getElementsByClassName("o_game-nav-item")[1].lastElementChild.click();
+        goToPreviousPage();
       }
       break;
     case 39: //right arrow
       if (document.activeElement.id != "SBURBStage" && document.activeElement.type != "application/x-shockwave-flash") {
-        if (!window.location.hostname.includes("homestuck2.com") && // site-specific workaround - for some reason, `click()`ing both elements doesn't work on Homestuck^2
-          document.getElementsByClassName("disp-ib")[1] !== undefined) {
-          document.getElementsByClassName("disp-ib")[1].firstElementChild.click();
-        }
-
-        document.getElementsByClassName("o_story-nav type-hs-copy line-tight pad-x-0 pad-x-lg--md")[0].getElementsByTagName('a')[0].click();  // This also handles the Epilogues if we remove the last class `mar-b-lg` (Epilogues use `pad-b`lg`).
+        goToNextPage();
       }
       break;
   }

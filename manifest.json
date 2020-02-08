@@ -2,7 +2,7 @@
   "description": "A fork of Homesuck Companion extension that I made just for myself",
   "manifest_version": 2,
   "name": "Homestuck Companion (DemoniacDeath fork)",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "homepage_url": "https://github.com/DemoniacDeath/homestuck-companion",
   "icons": {
     "48": "icons/border-48.png"
