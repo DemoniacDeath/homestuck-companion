@@ -1,9 +1,9 @@
 {
-  "description": "Adds commentary, keyboard navigation and useful info to the pages of Homestuck.com stories.",
+  "description": "A fork of Homesuck Companion extension that I made just for myself",
   "manifest_version": 2,
-  "name": "Homestuck Companion",
-  "version": "0.6.12",
-  "homepage_url": "https://addons.mozilla.org/en-US/firefox/addon/homestuck-companion/",
+  "name": "Homestuck Companion (DemoniacDeath fork)",
+  "version": "0.7.0",
+  "homepage_url": "https://github.com/DemoniacDeath/homestuck-companion",
   "icons": {
     "48": "icons/border-48.png"
   },

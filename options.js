@@ -2,18 +2,31 @@ function saveOptions(e) {
   e.preventDefault();
   browser.storage.local.set({
     hussiecomment: document.querySelector("#hussiecomment").checked,
+    autoopenchat: document.querySelector("#autoopenchat").checked,
   });
 }
 
 function restoreOptions() {
 
   async function setCurrentChoice(result) {
-    if (result.hussiecomment === undefined) {
-      await browser.storage.local.set({
-        hussiecomment: true,
-      });
+    var resultWithDefaults = {
+      hussiecomment: result.hussiecomment,
+      autoopenchat: result.autoopenchat,
+    };
+    var shouldSetDefaults = false;
+    if (resultWithDefaults.hussiecomment === undefined) {
+      resultWithDefaults.hussiecomment = true;
+      shouldSetDefaults = true;
     }
-    document.querySelector("#hussiecomment").checked = result.hussiecomment;
+    if (resultWithDefaults.autoopenchat === undefined) {
+      resultWithDefaults.autoopenchat = false;
+      shouldSetDefaults = true;
+    }
+    if (shouldSetDefaults) {
+      await browser.storage.local.set(resultWithDefaults);
+    }
+    document.querySelector("#hussiecomment").checked = resultWithDefaults.hussiecomment;
+    document.querySelector("#autoopenchat").checked = resultWithDefaults.autoopenchat;
   }
 
   function onError(error) {
@@ -21,9 +34,7 @@ function restoreOptions() {
   }
 
   //We attempt to get the boolean values from storage
-  var hussiecomment = browser.storage.local.get("hussiecomment");
-
-  hussiecomment.then(setCurrentChoice, onError);
+  browser.storage.local.get(["hussiecomment", "autoopenchat"]).then(setCurrentChoice, onError);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
